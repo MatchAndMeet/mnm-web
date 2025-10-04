@@ -406,3 +406,153 @@ npm run dev
 ### 개발 도구
 - **--host**: 네트워크의 다른 기기에서 접근 가능
 - **HMR (Hot Module Replacement)**: 저장 시 자동 새로고침
+
+---
+
+## Features 섹션 개발
+
+### Features 섹션 추가
+
+Hero 아래에 서비스 특징을 소개하는 섹션을 추가했습니다.
+
+### HTML 구조
+
+**App.jsx:**
+```jsx
+function App() {
+    return (
+        <>
+            {/* Hero 섹션 */}
+            <div className="hero">...</div>
+
+            {/* Features 섹션 */}
+            <div className="features">
+                <h2>Why Choose Match And Meet?</h2>
+
+                <div className="features-grid">
+                    <div className="feature-card">
+                        <h3>🤖 AI Matching</h3>
+                        <p>Our advanced AI algorithm finds your perfect match...</p>
+                    </div>
+
+                    <div className="feature-card">
+                        <h3>🔒 Safe & Secure</h3>
+                        <p>Verified profiles and secure messaging...</p>
+                    </div>
+
+                    <div className="feature-card">
+                        <h3>⚡ Fast & Easy</h3>
+                        <p>Simple interface gets you matched...</p>
+                    </div>
+                </div>
+            </div>
+        </>
+    )
+}
+```
+
+**Fragment (`<>...</>`):**
+- 여러 요소를 묶을 때 사용
+- 불필요한 div 추가 없이 그룹화
+- `<React.Fragment>...</React.Fragment>`의 축약형
+
+### CSS Grid 레이아웃
+
+**App.css:**
+```css
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);  /* 3개 열 균등 분할 */
+    gap: 30px;                              /* 간격 */
+    max-width: 1200px;
+    margin: 0 auto;                         /* 중앙 정렬 */
+}
+```
+
+**Grid 개념:**
+- `display: grid`: Grid 레이아웃 활성화
+- `grid-template-columns`: 열 구조 정의
+  - `repeat(3, 1fr)`: 3개 열을 1:1:1 비율로
+  - `1fr` = 1 fraction (사용 가능한 공간의 1 비율)
+- `gap`: 그리드 아이템 간 간격
+- Flexbox vs Grid:
+  - Flexbox: 1차원 (행 또는 열)
+  - Grid: 2차원 (행과 열)
+
+### 카드 스타일 & 인터랙션
+
+```css
+.feature-card {
+    padding: 30px;
+    background-color: #f8f9fa;
+    border-radius: 12px;
+    text-align: center;
+    transition: transform 0.3s;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);  /* 위로 5px 이동 */
+}
+```
+
+**transform 속성:**
+- `translateY(-5px)`: Y축으로 -5px 이동 (위로)
+- `translateX()`: X축 이동
+- `scale()`: 크기 변경
+- `rotate()`: 회전
+
+### 반응형 디자인 (@media)
+
+```css
+@media (max-width: 768px) {
+    .features-grid {
+        grid-template-columns: 1fr;  /* 모바일: 1열 */
+    }
+
+    .features h2 {
+        font-size: 28px;
+    }
+
+    .hero h1 {
+        font-size: 36px;
+    }
+}
+```
+
+**미디어 쿼리:**
+- `@media (max-width: 768px)`: 화면 너비 768px 이하일 때
+- 일반적인 브레이크포인트:
+  - 모바일: 0-768px
+  - 태블릿: 768-1024px
+  - 데스크톱: 1024px+
+- 모바일 퍼스트 vs 데스크톱 퍼스트
+  - 모바일 퍼스트: 기본 스타일은 모바일, `@media (min-width)`로 큰 화면
+  - 데스크톱 퍼스트: 기본 스타일은 데스크톱, `@media (max-width)`로 작은 화면
+
+---
+
+## 학습한 주요 개념 (추가)
+
+### React Fragment
+- `<>...</>`: 여러 요소를 불필요한 DOM 없이 그룹화
+- 컴포넌트가 하나의 루트 요소만 반환해야 할 때 유용
+
+### CSS Grid
+- **2차원 레이아웃 시스템**
+- `grid-template-columns`: 열 정의
+- `grid-template-rows`: 행 정의
+- `gap`: 간격
+- `repeat()`: 반복 패턴
+- `fr` 단위: 비율 기반 크기
+
+### CSS Transform
+- **요소의 위치, 크기, 회전 변경**
+- `translateX()`, `translateY()`: 이동
+- `scale()`: 크기 조절
+- `rotate()`: 회전
+- hover와 함께 사용하면 동적 효과
+
+### 반응형 웹 디자인
+- **@media 쿼리**: 화면 크기에 따라 다른 스타일 적용
+- 모바일/태블릿/데스크톱 대응
+- 브레이크포인트 설정
