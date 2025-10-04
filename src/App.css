@@ -1,0 +1,49 @@
+.hero {
+    /*화면 전체 높이*/
+    height: 100vh;
+
+    /*내용 가운데 정렬*/
+    display: flex;
+    flex-direction: column;    /* 세로 배치 */
+    justify-content: center;   /* 세로 중앙 */
+    align-items: center;       /* 가로 중앙 */
+
+    /*패딩*/
+    padding: 20px;
+
+    /*배경색*/
+    background-color: #f8f9fa;
+}
+
+.hero h1 {
+    font-size: 48px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.hero p {
+    font-size: 18px;
+    color: #666;
+    margin-bottom: 30px;
+    max-width: 600px;
+    line-height: 1.6;
+    text-align: center;
+}
+
+.hero button {
+    padding: 15px 40px;
+    font-size: 18px;
+    font-weight: 600;
+    color: white;
+    background-color: #FF6B6B;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.hero button:hover {
+    background-color: #ff5252;
+}
+

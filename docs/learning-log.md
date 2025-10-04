@@ -164,9 +164,245 @@ npm run dev      # 개발 서버 시작
 - **랜딩페이지**: 서비스 소개 및 사용자 유입을 위한 첫 페이지
 - **후킹 (Hooking)**: 사용자 관심 유도 및 확보
 
+#### 7. 프로젝트 클린업 (샘플 코드 제거)
+
+**삭제한 파일:**
+- `public/vite.svg` - 샘플 로고 이미지
+- `src/assets/react.svg` - React 로고 이미지
+
+**초기화한 파일:**
+- `src/App.css` - 전부 삭제, 빈 파일로
+- `src/index.css` - 전부 삭제, 빈 파일로
+- `src/App.jsx` - 최소 구조로 단순화
+
+**깨끗한 App.jsx:**
+```jsx
+function App() {
+  return (
+    <div>
+      <h1>MatchAndMeet</h1>
+    </div>
+  )
+}
+
+export default App
+```
+
+**이유:**
+- 학습용 샘플 코드 제거
+- 깨끗한 상태에서 직접 작성
+- 필요한 것만 추가하는 방식
+
 ---
 
-## 다음 단계
-- [ ] React 프로젝트 구조 이해
-- [ ] 개발 서버 실행 (`npm run dev`)
-- [ ] 기본 컴포넌트 학습
+## 다음 단계: 랜딩페이지 개발 시작
+
+### 1단계: 페이지 구조 기획 (추천)
+랜딩페이지에 어떤 섹션이 들어갈지 먼저 정리:
+- Hero (메인 비주얼 + 핵심 메시지)
+- 서비스 소개
+- 주요 기능
+- 이메일 수집 (대기자 명단)
+- Footer
+
+### 2단계: HTML/CSS 기본 학습
+React 전에 기본기:
+- HTML 태그 (`div`, `h1`, `p`, `button` 등)
+- CSS 스타일링 (색상, 레이아웃, 폰트)
+- Flexbox / Grid (레이아웃)
+
+### 3단계: 컴포넌트로 나누기
+- Header 컴포넌트
+- Hero 컴포넌트
+- Feature 컴포넌트
+- EmailSignup 컴포넌트
+- Footer 컴포넌트
+
+**추천 순서:**
+1. 먼저 `App.jsx`에서 전체 HTML 구조 작성
+2. 스타일링 적용
+3. 나중에 컴포넌트로 분리
+
+---
+
+## Hero 섹션 개발
+
+### Hero 섹션이란?
+- 랜딩페이지 **최상단 영역**
+- 사용자가 **첫 번째로 보는 화면**
+- 보통 화면 전체 높이(100vh) 차지
+- 서비스 핵심 메시지 전달
+- "Hero Image/Banner"에서 유래
+
+### Hero 섹션 HTML 구조
+
+**App.jsx:**
+```jsx
+import './App.css'  // CSS 파일 import 필수!
+
+function App() {
+    return (
+        <div className="hero">
+            <h1>Match And Meet</h1>
+            <p>"We're currently improving our matching algorithm to accommodate a sudden spike in users."</p>
+            <button>Sign up for the waitlist</button>
+        </div>
+    )
+}
+
+export default App
+```
+
+**포인트:**
+- `className` 사용 (JSX에서 `class` 대신)
+- `<h1>`: 페이지 메인 제목
+- `<p>`: 설명 문구
+- `<button>`: CTA (Call To Action)
+
+### CSS 스타일링
+
+#### 1. Flexbox로 가운데 정렬
+
+**App.css:**
+```css
+.hero {
+    height: 100vh;              /* 화면 전체 높이 */
+    display: flex;              /* Flexbox 활성화 */
+    flex-direction: column;     /* 세로 배치 */
+    justify-content: center;    /* 세로 중앙 정렬 */
+    align-items: center;        /* 가로 중앙 정렬 */
+    padding: 20px;              /* 가장자리 여백 */
+    background-color: #f8f9fa;  /* 배경색 */
+}
+```
+
+**Flexbox 개념:**
+- `display: flex`: 유연한 레이아웃 시작
+- `flex-direction: column`: 자식을 세로로 배치
+  - `row` (기본값): 가로 배치
+  - `column`: 세로 배치
+- `justify-content`: **주축** 방향 정렬
+  - column이면 세로 정렬
+- `align-items`: **교차축** 방향 정렬
+  - column이면 가로 정렬
+
+#### 2. 텍스트 스타일
+
+```css
+.hero h1 {
+    font-size: 48px;         /* 글자 크기 */
+    font-weight: 700;        /* 굵기 (400=보통, 700=굵게) */
+    color: #333;             /* 글자 색 */
+    margin-bottom: 20px;     /* 아래 여백 */
+}
+
+.hero p {
+    font-size: 18px;
+    color: #666;
+    margin-bottom: 30px;
+    max-width: 600px;        /* 최대 너비 제한 */
+    line-height: 1.6;        /* 줄 간격 */
+    text-align: center;      /* 텍스트 중앙 정렬 */
+}
+```
+
+#### 3. 버튼 스타일
+
+```css
+.hero button {
+    padding: 15px 40px;              /* 상하 15px, 좌우 40px */
+    font-size: 18px;
+    font-weight: 600;
+    color: white;
+    background-color: #FF6B6B;       /* 배경색 */
+    border: none;                    /* 기본 테두리 제거 */
+    border-radius: 8px;              /* 모서리 둥글게 */
+    cursor: pointer;                 /* 마우스 포인터 */
+    transition: background-color 0.3s; /* 부드러운 색상 변화 */
+}
+
+.hero button:hover {
+    background-color: #ff5252;       /* 마우스 올렸을 때 색상 */
+}
+```
+
+**인터랙션:**
+- `:hover`: 마우스 올렸을 때 스타일
+- `transition`: 변화를 부드럽게
+- `cursor: pointer`: 클릭 가능함을 표시
+
+### CSS Reset (index.css)
+
+브라우저 기본 스타일 제거:
+
+```css
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+```
+
+**이유:**
+- 브라우저 기본 `margin: 8px` 제거
+- 모든 브라우저에서 동일하게 보이도록
+- `box-sizing: border-box`: width에 padding/border 포함
+
+### 모바일에서 확인
+
+**package.json 수정:**
+```json
+"scripts": {
+  "dev": "vite --host"
+}
+```
+
+**실행:**
+```bash
+npm run dev
+```
+
+**모바일에서 접속:**
+1. PC와 같은 WiFi 연결
+2. 터미널의 `Network: http://192.168.x.x:5173/` 주소 확인
+3. 모바일 브라우저에서 해당 주소 입력
+
+---
+
+## 학습한 주요 개념
+
+### JavaScript/React
+- **export default vs export**
+  - `export default`: 파일당 1개, import 시 이름 자유
+  - `export`: 여러 개 가능, import 시 정확한 이름
+- **import './App.css'**: CSS 파일 연결 필수
+- **className**: JSX에서 `class` 대신 사용
+
+### CSS 단위
+- **vh (Viewport Height)**: 화면 높이 기준
+  - `100vh` = 화면 높이 100%
+  - 기기마다 자동 조정
+- **vw (Viewport Width)**: 화면 너비 기준
+
+### CSS 레이아웃
+- **Flexbox**: 유연한 레이아웃 시스템
+  - `display: flex`
+  - `flex-direction`: 배치 방향
+  - `justify-content`: 주축 정렬
+  - `align-items`: 교차축 정렬
+
+### CSS 스타일링
+- **padding**: 안쪽 여백 (콘텐츠와 테두리 사이)
+- **margin**: 바깥 여백 (요소 간 간격)
+- **border-radius**: 모서리 둥글게
+- **transition**: 애니메이션 효과
+- **:hover**: 마우스 올렸을 때 스타일
+
+### 개발 도구
+- **--host**: 네트워크의 다른 기기에서 접근 가능
+- **HMR (Hot Module Replacement)**: 저장 시 자동 새로고침
