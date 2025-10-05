@@ -1,4 +1,6 @@
 .hero {
+    position: relative;  /* 언어 토글 버튼 absolute 위치 기준 */
+
     /*화면 전체 높이*/
     height: 100vh;
 
@@ -251,6 +253,40 @@
 
 .logout-btn:hover {
     background-color: #555;
+}
+
+/* 언어 전환 버튼 */
+.language-toggle {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.language-toggle button {
+    background: none;
+    border: none;
+    color: #666;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 5px 10px;
+    transition: color 0.3s;
+}
+
+.language-toggle button:hover {
+    color: #333;
+}
+
+.language-toggle button.active {
+    color: #FF6B6B;
+    font-weight: 700;
+}
+
+.language-toggle span {
+    color: #ccc;
 }
 
 /* 모바일 대응 */

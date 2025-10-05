@@ -1,0 +1,30 @@
+{
+  "hero": {
+    "title": "Match And Meet",
+    "subtitle": "We're currently improving our matching algorithm to accommodate a sudden spike in users.",
+    "cta": "Sign up for the waitlist"
+  },
+  "features": {
+    "title": "Why Choose Match And Meet?",
+    "realConnections": {
+      "title": "💝 Real Connections, Not Swipes",
+      "description": "Modern dating has become too superficial with endless swiping and ghosting. The more meaningful dates you have, the better you become at understanding what you truly want. Meet one genuine person every week and find your real match."
+    },
+    "weeklyCurated": {
+      "title": "📅 Weekly Curated Matches",
+      "description": "Receive three carefully selected matches every week. Choose one and commit to meeting them - no flaking allowed. If you don't follow through, you won't receive next week's matches. We're serious about real dates."
+    },
+    "realisticMatching": {
+      "title": "🎯 Realistic Matching Algorithm",
+      "description": "Unlike other apps dominated by top 10% profiles and fake accounts, we match you with real people at your level. Get genuine, compatible matches that actually lead to meaningful relationships."
+    }
+  },
+  "emailSignup": {
+    "title": "Join the Waitlist",
+    "subtitle": "Be the first to know when we launch",
+    "placeholder": "Enter your email",
+    "button": "Notify Me",
+    "successMessage": "✅ Thank you! We'll notify you soon.",
+    "errorMessage": "Already registered or invalid email"
+  }
+}

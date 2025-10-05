@@ -1,8 +1,11 @@
 import {useState, useRef} from 'react';
 import { supabase } from '../supabaseClient'
 import { trackEvent } from '../amplitudeClient'
+import { useTranslation } from 'react-i18next'
 
 function Home() {
+    const { t, i18n } = useTranslation()
+
     // 상태 변수 선언
     const [email, setEmail] = useState('');
     const [submitted, setSubmitted] = useState(false);
@@ -47,72 +50,81 @@ function Home() {
         }
     }
 
+    // 언어 전환 함수
+    const changeLanguage = (lang) => {
+        i18n.changeLanguage(lang)  // 언어 변경
+        localStorage.setItem('language', lang)  // localStorage에 저장
+    }
+
     return (
         <>
             {/*히어로 섹션*/}
             <div className="hero">
-                <h1>Match And Meet</h1>
-                <p>“We’re currently improving our matching algorithm to accommodate a sudden spike in users.”</p>
-                <button onClick={scrollToEmailSection}>Sign up for the waitlist</button>
+                {/* 언어 전환 버튼 */}
+                <div className="language-toggle">
+                    <button
+                        onClick={() => changeLanguage('en')}
+                        className={i18n.language === 'en' ? 'active' : ''}
+                    >
+                        EN
+                    </button>
+                    <span>|</span>
+                    <button
+                        onClick={() => changeLanguage('ko')}
+                        className={i18n.language === 'ko' ? 'active' : ''}
+                    >
+                        한국어
+                    </button>
+                </div>
+
+                <h1>{t('hero.title')}</h1>
+                <p>{t('hero.subtitle')}</p>
+                <button onClick={scrollToEmailSection}>{t('hero.cta')}</button>
             </div>
 
             {/*피처 섹션*/}
             <div className="features">
-                <h2>Why Choose Match And Meet?</h2>
+                <h2>{t('features.title')}</h2>
 
                 <div className="features-grid">
                     <div className="feature-card">
-                        <h3>💝 Real Connections, Not Swipes</h3>
-                        <p>Modern dating has become too superficial with endless swiping and ghosting. The more meaningful dates you have, the better you become at understanding what you truly want. Meet one genuine person every week and find your real
-                            match.</p>
+                        <h3>{t('features.realConnections.title')}</h3>
+                        <p>{t('features.realConnections.description')}</p>
                     </div>
 
                     <div className="feature-card">
-                        <h3>📅 Weekly Curated Matches</h3>
-                        <p>Receive three carefully selected matches every week. Choose one and commit to meeting them - no flaking allowed. If you don't follow through, you won't receive next week's matches. We're serious about real dates.</p>
+                        <h3>{t('features.weeklyCurated.title')}</h3>
+                        <p>{t('features.weeklyCurated.description')}</p>
                     </div>
 
                     <div className="feature-card">
-                        <h3>🎯 Realistic Matching Algorithm</h3>
-                        <p>Unlike other apps dominated by top 10% profiles and fake accounts, we match you with real people at your level. Get genuine, compatible matches that actually lead to meaningful relationships.</p>
+                        <h3>{t('features.realisticMatching.title')}</h3>
+                        <p>{t('features.realisticMatching.description')}</p>
                     </div>
-
-                    {/*<div className="feature-card">
-                        <h3>🤖 만남이 부족한 사회 문제</h3>
-                        <p>점점 인스턴트 만남이 만아지고 만남 자체도 줄어들었습니다. 많이 만날수록 더 이성을 보는 눈도 좋아지고 자신의 이성에 대한 매너도 좋아집니다. 매주 한 명의 이성을 만나면서 진짜 인연을 찾길 바랍니다.</p>
-                    </div>
-
-                    <div className="feature-card">
-                        <h3>🔒 매주 매칭 상대 선정</h3>
-                        <p>매주 세 명의 매칭 상대를 선정해드립니다. 여기서 한 명을 선택하게 되면 해당 주에 무조건 만남을 가져야합니다. 만남이 성사되지 않을 경우에 다음 매칭이 제공되지 않습니다.</p>
-                    </div>
-
-                    <div className="feature-card">
-                        <h3>⚡ 현실적인 매칭 상대 선정</h3>
-                        <p>상위 10%로 남성, 여성 알바가 독식하는 다른 데이팅 앱과는 다릅니다. 현실적인 상대를 추천해드립니다.</p>
-                    </div>*/}
                 </div>
             </div>
 
             {/*이메일 제출 섹션*/}
             <div className="email-signup" ref={emailSectionRef}>
-                <h2>Join the Waitlist</h2>
-                <p>Be the first to know when we launch</p>
+                <h2>{t('emailSignup.title')}</h2>
+                <p>{t('emailSignup.subtitle')}</p>
 
                 {submitted ? (
-                    <p className="success-message">✅ Thank you! We'll notify you soon.</p>
+                    <p className="success-message">{t('emailSignup.successMessage')}</p>
                 ) : (
                     <form onSubmit={handleSubmit}>
                         <input
                             type="email"
-                            placeholder="Enter your email"
+                            placeholder={t('emailSignup.placeholder')}
                             value={email}
                             onChange={handleEmailChange}
                             required
                         />
-                        <button type="submit">Notify Me</button>
+                        <button type="submit">{t('emailSignup.button')}</button>
                     </form>
                 )}
+
+                {error && <p className="error-message">{t('emailSignup.errorMessage')}</p>}
             </div>
         </>
     )
