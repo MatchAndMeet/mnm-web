@@ -1188,3 +1188,28 @@ https://matchandmeet.vercel.app/?utm_source=everytime&utm_medium=post&utm_campai
 - 애니메이션 효과 (fade-in, slide-in 등)
 - Footer 섹션 추가 (소셜 링크, 연락처)
 - 버튼 디자인 개선
+
+### 5. SEO 최적화
+
+**목적:**
+- 검색 엔진 노출 향상
+- 자연 유입(Organic Traffic) 증가
+
+**구현 항목:**
+- **메타 태그 추가** (`index.html`):
+  - `<title>` 최적화
+  - `<meta name="description">` 추가
+  - `<meta name="keywords">` 추가
+- **시맨틱 HTML 사용**:
+  - `<header>`, `<main>`, `<section>`, `<footer>` 태그
+  - 제목 태그 계층 구조 (`h1` → `h2` → `h3`)
+- **robots.txt 생성** (`public/robots.txt`):
+  - 검색 엔진 크롤러 허용 설정
+- **sitemap.xml 생성** (`public/sitemap.xml`):
+  - 사이트 구조 정보 제공
+- **페이지 로딩 속도 최적화**:
+  - 이미지 압축 및 lazy loading
+  - CSS/JS 번들 최적화
+- **모바일 친화성 확인**:
+  - 반응형 디자인 검증
+  - 터치 영역 크기 확인
