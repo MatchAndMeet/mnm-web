@@ -1,5 +1,6 @@
 import {useState, useRef} from 'react';
 import { supabase } from '../supabaseClient'
+import { trackEvent } from '../amplitudeClient'
 
 function Home() {
     // 상태 변수 선언
@@ -36,10 +37,12 @@ function Home() {
             if (error) {
                 console.error('Error:', error)
                 setError('Already registered or invalid email')
+                trackEvent('Email Signup Failed', { error: error.message })
             } else {
                 console.log('Success:', data)
                 setSubmitted(true)
                 setEmail('')
+                trackEvent('Email Signup Success')  // 🎯 성공 이벤트 추적
             }
         }
     }
