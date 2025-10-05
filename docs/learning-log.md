@@ -556,3 +556,452 @@ function App() {
 - **@media 쿼리**: 화면 크기에 따라 다른 스타일 적용
 - 모바일/태블릿/데스크톱 대응
 - 브레이크포인트 설정
+
+---
+
+## Email Signup 섹션 및 인터랙티브 기능 개발
+
+### Email Signup 섹션 추가
+
+대기자 명단 등록을 위한 폼 섹션 추가
+
+**HTML 구조:**
+```jsx
+<div className="email-signup">
+    <h2>Join the Waitlist</h2>
+    <p>Be the first to know when we launch</p>
+
+    <form>
+        <input type="email" placeholder="Enter your email" />
+        <button type="submit">Notify Me</button>
+    </form>
+</div>
+```
+
+**CSS:**
+- Flexbox로 입력 필드와 버튼 가로 배치
+- 모바일에서는 세로 배치 (flex-direction: column)
+- input focus 시 테두리 색상 변경
+
+---
+
+## React State 관리 (useState)
+
+### useState란?
+
+**React의 핵심 Hook:**
+- 컴포넌트가 기억하는 데이터
+- 상태가 변경되면 컴포넌트 자동 재렌더링
+- 사용자 입력, 클릭 등의 상호작용 처리
+
+**사용법:**
+```jsx
+const [value, setValue] = useState(initialValue)
+//     ↑       ↑              ↑
+//   현재값  변경함수      초기값
+```
+
+### 이메일 폼에 적용
+
+```jsx
+import { useState } from 'react'
+
+function App() {
+    const [email, setEmail] = useState('')
+    const [submitted, setSubmitted] = useState(false)
+    const [error, setError] = useState(null)
+
+    const handleEmailChange = (e) => {
+        setEmail(e.target.value)
+        setError(null)
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault()  // 페이지 새로고침 방지
+
+        if (email) {
+            console.log('이메일 제출:', email)
+            setSubmitted(true)
+            setEmail('')  // 입력 필드 초기화
+        }
+    }
+}
+```
+
+**주요 개념:**
+- `e.preventDefault()`: 폼 기본 동작(새로고침) 방지
+- `e.target.value`: 입력 필드의 현재 값
+- 상태 변경 → 화면 자동 업데이트
+
+### 조건부 렌더링
+
+```jsx
+{submitted ? (
+    <p className="success-message">✅ Thank you!</p>
+) : (
+    <form>...</form>
+)}
+```
+
+삼항 연산자로 조건에 따라 다른 UI 표시
+
+---
+
+## useRef와 스크롤 기능
+
+### useRef란?
+
+**DOM 요소를 직접 참조하는 Hook:**
+- JavaScript의 `getElementById` 같은 역할
+- 렌더링에 영향을 주지 않음
+- `.current`로 실제 DOM 요소 접근
+
+### 스크롤 기능 구현
+
+```jsx
+import { useRef } from 'react'
+
+function App() {
+    const emailSectionRef = useRef(null)
+
+    const scrollToEmailSection = () => {
+        emailSectionRef.current?.scrollIntoView({
+            behavior: 'smooth'
+        })
+    }
+
+    return (
+        <>
+            <button onClick={scrollToEmailSection}>Sign up</button>
+            <div ref={emailSectionRef}>...</div>
+        </>
+    )
+}
+```
+
+**주요 메서드:**
+- `scrollIntoView({ behavior: 'smooth' })`: 부드러운 스크롤
+- `?.` (Optional Chaining): null이면 에러 없이 스킵
+
+---
+
+## Supabase 데이터베이스 연동
+
+### Supabase란?
+
+**오픈소스 Firebase 대안:**
+- PostgreSQL 기반 실시간 데이터베이스
+- REST API 자동 생성
+- Row Level Security (RLS)로 보안 관리
+- 무료 플랜: 50,000 rows, 500MB DB
+
+### 설정 과정
+
+**1. Supabase 프로젝트 생성**
+- supabase.com 가입
+- 새 프로젝트 생성
+- Region: Northeast Asia (Seoul)
+- Database 비밀번호 설정
+
+**2. emails 테이블 생성**
+
+SQL:
+```sql
+CREATE TABLE emails (
+  id BIGSERIAL PRIMARY KEY,
+  email TEXT NOT NULL UNIQUE,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+ALTER TABLE emails ENABLE ROW LEVEL SECURITY;
+
+-- 누구나 이메일 제출 가능
+CREATE POLICY "Enable insert for anon users"
+ON emails FOR INSERT
+TO anon, authenticated
+WITH CHECK (true);
+
+-- 누구나 읽기 가능 (나중에 제한 가능)
+CREATE POLICY "Enable read for all users"
+ON emails FOR SELECT
+TO anon, authenticated
+USING (true);
+```
+
+**RLS (Row Level Security):**
+- 테이블 수준의 보안 정책
+- `anon`: 익명 사용자 (로그인 안 함)
+- `authenticated`: 로그인한 사용자
+- `WITH CHECK (true)`: 모든 삽입 허용
+- `USING (true)`: 모든 읽기 허용
+
+**3. React에 Supabase 클라이언트 설치**
+
+```bash
+npm install @supabase/supabase-js
+```
+
+**4. 환경변수 설정**
+
+`.env` 파일:
+```env
+VITE_SUPABASE_URL=https://xxxxx.supabase.co
+VITE_SUPABASE_ANON_KEY=eyJhbG...
+VITE_ADMIN_PASSWORD=your_secure_password
+```
+
+**중요:**
+- `.env` 파일은 Git에 절대 올리지 않음 (.gitignore)
+- `VITE_` 접두사 필수 (Vite 환경변수)
+- Vercel 배포 시 Dashboard에서 환경변수 별도 설정 필요
+
+**5. Supabase 클라이언트 생성**
+
+`src/supabaseClient.js`:
+```javascript
+import { createClient } from '@supabase/supabase-js'
+
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
+
+export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+```
+
+### 데이터 저장 기능
+
+```jsx
+import { supabase } from './supabaseClient'
+
+const handleSubmit = async (e) => {
+    e.preventDefault()
+
+    if (email) {
+        const { data, error } = await supabase
+            .from('emails')
+            .insert([{ email: email }])
+
+        if (error) {
+            setError('Already registered or invalid email')
+        } else {
+            setSubmitted(true)
+            setEmail('')
+        }
+    }
+}
+```
+
+**async/await:**
+- 비동기 작업 처리
+- `await`로 Supabase 응답 대기
+- `{ data, error }` 구조분해 할당
+
+---
+
+## React Router로 페이지 라우팅
+
+### React Router란?
+
+**SPA(Single Page Application)에서 페이지 전환:**
+- URL에 따라 다른 컴포넌트 표시
+- 새로고침 없이 페이지 전환
+- 브라우저 히스토리 관리
+
+### 설치 및 설정
+
+```bash
+npm install react-router-dom
+```
+
+**main.jsx:**
+```jsx
+import { BrowserRouter } from 'react-router-dom'
+
+<BrowserRouter>
+    <App />
+</BrowserRouter>
+```
+
+**App.jsx:**
+```jsx
+import { Routes, Route } from 'react-router-dom'
+import Home from './pages/Home'
+import Admin from './pages/Admin'
+
+function App() {
+    return (
+        <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/admin" element={<Admin />} />
+        </Routes>
+    )
+}
+```
+
+**주요 컴포넌트:**
+- `BrowserRouter`: 전체 앱 감싸기
+- `Routes`: 라우트 그룹
+- `Route`: 개별 경로 정의
+  - `path`: URL 경로
+  - `element`: 렌더링할 컴포넌트
+
+---
+
+## 관리자 페이지 개발
+
+### 페이지 구조
+
+**src/pages/Home.jsx:**
+- 기존 랜딩페이지 컴포넌트
+- App.jsx에서 분리
+
+**src/pages/Admin.jsx:**
+- 이메일 목록 표시
+- Supabase에서 데이터 조회
+- 테이블 형태로 표시
+
+### 데이터 조회
+
+```jsx
+import { useState, useEffect } from 'react'
+import { supabase } from '../supabaseClient'
+
+function Admin() {
+    const [emails, setEmails] = useState([])
+    const [loading, setLoading] = useState(true)
+
+    useEffect(() => {
+        fetchEmails()
+    }, [])
+
+    const fetchEmails = async () => {
+        const { data, error } = await supabase
+            .from('emails')
+            .select('*')
+            .order('created_at', { ascending: false })
+
+        if (!error) {
+            setEmails(data)
+        }
+        setLoading(false)
+    }
+
+    return (
+        <table>
+            {emails.map((item) => (
+                <tr key={item.id}>
+                    <td>{item.email}</td>
+                    <td>{new Date(item.created_at).toLocaleString()}</td>
+                </tr>
+            ))}
+        </table>
+    )
+}
+```
+
+**useEffect:**
+- 컴포넌트 마운트 시 실행
+- `[]` 빈 의존성 배열 = 한 번만 실행
+- 데이터 가져오기에 주로 사용
+
+**배열 렌더링:**
+- `.map()`: 배열을 JSX로 변환
+- `key` prop 필수 (고유 ID)
+
+---
+
+## 비밀번호 보호 기능
+
+### localStorage 활용
+
+```jsx
+const [authenticated, setAuthenticated] = useState(false)
+const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD
+
+useEffect(() => {
+    const isAuth = localStorage.getItem('admin_authenticated')
+    if (isAuth === 'true') {
+        setAuthenticated(true)
+    }
+}, [])
+
+const handleLogin = (e) => {
+    e.preventDefault()
+
+    if (password === ADMIN_PASSWORD) {
+        localStorage.setItem('admin_authenticated', 'true')
+        setAuthenticated(true)
+    } else {
+        alert('Wrong password!')
+    }
+}
+
+const handleLogout = () => {
+    localStorage.removeItem('admin_authenticated')
+    setAuthenticated(false)
+}
+```
+
+**localStorage:**
+- 브라우저에 데이터 영구 저장
+- 세션 유지 (페이지 새로고침해도 유지)
+- 문자열만 저장 가능
+
+**조건부 렌더링:**
+```jsx
+if (!authenticated) {
+    return <LoginForm />  // 로그인 화면
+}
+
+return <AdminDashboard />  // 관리자 화면
+```
+
+---
+
+## 학습한 주요 개념 (추가)
+
+### React Hooks
+- **useState**: 상태 관리
+- **useRef**: DOM 참조
+- **useEffect**: 사이드 이펙트 (데이터 가져오기 등)
+
+### JavaScript 문법
+- **async/await**: 비동기 처리
+- **구조분해 할당**: `const { data, error } = result`
+- **Optional Chaining**: `obj?.property`
+- **삼항 연산자**: `condition ? true : false`
+- **템플릿 리터럴**: `` `Hello ${name}` ``
+
+### 환경변수
+- `.env`: 민감한 정보 관리
+- `import.meta.env`: Vite에서 환경변수 접근
+- `.gitignore`: `.env` 파일 제외
+- Vercel: Dashboard에서 환경변수 별도 설정
+
+### 데이터베이스
+- **PostgreSQL**: 관계형 데이터베이스
+- **RLS**: Row Level Security (행 수준 보안)
+- **CRUD**: Create (INSERT), Read (SELECT), Update, Delete
+- **Primary Key**: 고유 식별자
+
+### SPA (Single Page Application)
+- **라우팅**: URL에 따라 컴포넌트 전환
+- **페이지 전환**: 새로고침 없이
+- **History API**: 브라우저 뒤로가기/앞으로가기
+
+### 따옴표 컨벤션
+- **JavaScript**: 작은 따옴표 `'`
+- **JSX 속성**: 큰 따옴표 `"`
+- **템플릿 리터럴**: 백틱 `` ` ``
+
+---
+
+## 배포 환경변수 설정
+
+**Vercel Dashboard:**
+- Settings → Environment Variables
+- 모든 환경변수 추가:
+  - `VITE_SUPABASE_URL`
+  - `VITE_SUPABASE_ANON_KEY`
+  - `VITE_ADMIN_PASSWORD`
+- Environment: Production, Preview, Development 모두 선택
+- 환경변수 변경 후 재배포 필요
