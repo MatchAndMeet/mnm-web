@@ -1128,6 +1128,204 @@ https://matchandmeet.vercel.app/?utm_source=everytime&utm_medium=post&utm_campai
 
 ---
 
+## 다국어 지원 (i18n) 구현
+
+### react-i18next란?
+
+**React 전용 국제화(Internationalization) 라이브러리:**
+- 가장 많이 사용되는 React i18n 라이브러리 (주간 500만+ 다운로드)
+- 번역 관리, 언어 전환, 브라우저 언어 감지 자동 지원
+- Hook 기반으로 사용하기 쉬움
+
+### 설정 과정
+
+**1. 패키지 설치**
+
+```bash
+npm install react-i18next i18next
+```
+
+- `i18next`: 핵심 국제화 라이브러리
+- `react-i18next`: React에서 사용하기 위한 래퍼
+
+**2. 번역 파일 생성**
+
+디렉토리 구조:
+```
+src/
+  locales/
+    en.json  (영어 번역)
+    ko.json  (한국어 번역)
+```
+
+`src/locales/en.json`:
+```json
+{
+  "hero": {
+    "title": "Match And Meet",
+    "subtitle": "We're currently improving our matching algorithm...",
+    "cta": "Sign up for the waitlist"
+  },
+  "features": {
+    "title": "Why Choose Match And Meet?",
+    "realConnections": {
+      "title": "💝 Real Connections, Not Swipes",
+      "description": "Modern dating has become too superficial..."
+    }
+  }
+}
+```
+
+**계층적 구조:**
+- 섹션별로 정리 (hero, features, emailSignup)
+- 키 이름은 영어로 (코드에서 사용)
+- 값은 각 언어로 번역
+
+**3. i18n 설정 파일 생성**
+
+`src/i18n.js`:
+```javascript
+import i18n from 'i18next'
+import { initReactI18next } from 'react-i18next'
+import en from './locales/en.json'
+import ko from './locales/ko.json'
+
+// 초기 언어 결정
+const getInitialLanguage = () => {
+    // 1. localStorage에 저장된 언어 확인
+    const savedLanguage = localStorage.getItem('language')
+    if (savedLanguage) return savedLanguage
+
+    // 2. 브라우저 언어 확인
+    const browserLanguage = navigator.language.split('-')[0]
+    if (['ko', 'en'].includes(browserLanguage)) return browserLanguage
+
+    // 3. 기본값
+    return 'en'
+}
+
+i18n
+    .use(initReactI18next)
+    .init({
+        resources: {
+            en: { translation: en },
+            ko: { translation: ko }
+        },
+        lng: getInitialLanguage(),
+        fallbackLng: 'en',
+        interpolation: {
+            escapeValue: false
+        }
+    })
+
+export default i18n
+```
+
+**언어 우선순위:**
+1. **localStorage**: 사용자가 이전에 선택한 언어
+2. **브라우저 언어**: `navigator.language`
+3. **기본값**: 영어
+
+**4. 앱 초기화**
+
+`src/main.jsx`:
+```javascript
+import './i18n'  // import만 해도 자동 초기화
+```
+
+**5. 컴포넌트에서 사용**
+
+`src/pages/Home.jsx`:
+```javascript
+import { useTranslation } from 'react-i18next'
+
+function Home() {
+    const { t, i18n } = useTranslation()
+
+    // 언어 전환 함수
+    const changeLanguage = (lang) => {
+        i18n.changeLanguage(lang)
+        localStorage.setItem('language', lang)
+    }
+
+    return (
+        <div>
+            <h1>{t('hero.title')}</h1>
+            <p>{t('hero.subtitle')}</p>
+            <button onClick={() => changeLanguage('ko')}>한국어</button>
+            <button onClick={() => changeLanguage('en')}>EN</button>
+        </div>
+    )
+}
+```
+
+**useTranslation Hook:**
+- `t()`: 번역 키로 텍스트 가져오기
+- `i18n`: i18n 인스턴스 (언어 변경 등)
+- `i18n.language`: 현재 언어
+- `i18n.changeLanguage()`: 언어 변경
+
+### 언어 토글 버튼 구현
+
+**UI 구현:**
+```jsx
+<div className="language-toggle">
+    <button
+        onClick={() => changeLanguage('en')}
+        className={i18n.language === 'en' ? 'active' : ''}
+    >
+        EN
+    </button>
+    <span>|</span>
+    <button
+        onClick={() => changeLanguage('ko')}
+        className={i18n.language === 'ko' ? 'active' : ''}
+    >
+        한국어
+    </button>
+</div>
+```
+
+**스타일:**
+```css
+.language-toggle {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.language-toggle button.active {
+    color: #FF6B6B;
+    font-weight: 700;
+}
+```
+
+### 주요 개념
+
+**i18n (Internationalization):**
+- 국제화 = 소프트웨어를 다양한 언어로 제공
+- i18n = "i" + 18글자 + "n"
+
+**localStorage 활용:**
+- 사용자가 선택한 언어 저장
+- 새로고침해도 유지
+- 시크릿 모드에서는 초기화
+
+**navigator.language:**
+- 브라우저/OS 언어 설정
+- 예: "ko-KR", "en-US"
+- `split('-')[0]`로 언어 코드만 추출
+
+**새로고침 vs localStorage:**
+- Command+R, Command+Shift+R: localStorage 유지
+- localStorage는 수동으로만 삭제 가능
+- 테스트는 시크릿 모드 사용
+
+---
+
 ## 앞으로 할 일
 
 ### 1. Open Graph 메타 태그 추가
@@ -1159,23 +1357,7 @@ https://matchandmeet.vercel.app/?utm_source=everytime&utm_medium=post&utm_campai
 - `public/favicon.ico` 파일 추가
 - `index.html`에 링크
 
-### 3. 글로벌 대응 (언어 전환)
-
-**목적:**
-- 한국어/영어 전환 기능
-- 더 넓은 사용자층 확보
-
-**구현 방법:**
-- `react-i18next` 라이브러리 사용
-- 언어 선택 버튼 추가
-- localStorage에 선택한 언어 저장
-
-**필요한 작업:**
-- 번역 파일 생성 (ko.json, en.json)
-- 컴포넌트에 번역 적용
-- 언어 토글 버튼 UI 추가
-
-### 4. 랜딩 페이지 디자인 개선
+### 3. 랜딩 페이지 디자인 개선
 
 **목적:**
 - 더 매력적이고 전문적인 디자인
@@ -1189,7 +1371,7 @@ https://matchandmeet.vercel.app/?utm_source=everytime&utm_medium=post&utm_campai
 - Footer 섹션 추가 (소셜 링크, 연락처)
 - 버튼 디자인 개선
 
-### 5. SEO 최적화
+### 4. SEO 최적화
 
 **목적:**
 - 검색 엔진 노출 향상
