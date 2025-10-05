@@ -1003,5 +1003,188 @@ return <AdminDashboard />  // 관리자 화면
   - `VITE_SUPABASE_URL`
   - `VITE_SUPABASE_ANON_KEY`
   - `VITE_ADMIN_PASSWORD`
+  - `VITE_AMPLITUDE_API_KEY`
 - Environment: Production, Preview, Development 모두 선택
 - 환경변수 변경 후 재배포 필요
+
+---
+
+## Amplitude Analytics 통합
+
+### Amplitude란?
+
+**이벤트 기반 사용자 행동 분석 플랫폼:**
+- 페이지뷰, 클릭, 제출 등 모든 사용자 행동 추적
+- UTM 파라미터 자동 수집 (트래픽 소스 분석)
+- 퍼널 분석, 코호트 분석, 리텐션 분석
+- 무료 플랜: 월 10M 이벤트
+
+### 설정 과정
+
+**1. Amplitude 계정 생성**
+- amplitude.com 가입
+- 프로젝트 생성
+- API Key 복사
+
+**2. 패키지 설치**
+
+```bash
+npm install @amplitude/analytics-browser
+```
+
+**3. Amplitude 클라이언트 생성**
+
+`src/amplitudeClient.js`:
+```javascript
+import * as amplitude from '@amplitude/analytics-browser'
+
+const AMPLITUDE_API_KEY = import.meta.env.VITE_AMPLITUDE_API_KEY
+
+export const initAmplitude = () => {
+    amplitude.init(AMPLITUDE_API_KEY, {
+        defaultTracking: {
+            sessions: true,
+            pageViews: true,
+            formInteractions: true,
+            fileDownloads: false
+        }
+    })
+}
+
+export const trackEvent = (eventName, eventProperties = {}) => {
+    amplitude.track(eventName, eventProperties)
+}
+
+export { amplitude }
+```
+
+**defaultTracking 옵션:**
+- `sessions`: 세션 자동 추적
+- `pageViews`: 페이지뷰 자동 추적
+- `formInteractions`: 폼 인터랙션 자동 추적
+- `fileDownloads`: 파일 다운로드 추적 (비활성화)
+
+**4. 앱 초기화**
+
+`src/main.jsx`:
+```javascript
+import { initAmplitude } from './amplitudeClient'
+
+// Amplitude 초기화
+initAmplitude()
+
+createRoot(document.getElementById('root')).render(...)
+```
+
+**5. 커스텀 이벤트 추적**
+
+`src/pages/Home.jsx`:
+```javascript
+import { trackEvent } from '../amplitudeClient'
+
+const handleSubmit = async (e) => {
+    e.preventDefault()
+
+    if (email) {
+        const { data, error } = await supabase
+            .from('emails')
+            .insert([{ email: email }])
+
+        if (error) {
+            trackEvent('Email Signup Failed', { error: error.message })
+        } else {
+            trackEvent('Email Signup Success')
+        }
+    }
+}
+```
+
+### UTM 파라미터 추적
+
+**UTM 파라미터란:**
+- URL 뒤에 붙이는 추적 코드
+- 트래픽 소스 분석에 사용
+- Amplitude가 자동으로 수집
+
+**주요 파라미터:**
+- `utm_source`: 출처 (todayhumor, everytime, instagram 등)
+- `utm_medium`: 매체 (post, ad, story, email 등)
+- `utm_campaign`: 캠페인명 (launch, beta 등)
+- `utm_content`: 세부 구분 (button1, banner2 등)
+- `utm_term`: 검색어 (광고용)
+
+**사용 예시:**
+```
+https://matchandmeet.vercel.app/?utm_source=todayhumor&utm_medium=post&utm_campaign=launch
+https://matchandmeet.vercel.app/?utm_source=instagram&utm_medium=story&utm_campaign=launch
+https://matchandmeet.vercel.app/?utm_source=everytime&utm_medium=post&utm_campaign=launch
+```
+
+**Amplitude 대시보드:**
+- Analytics → Segmentation
+- Event 선택: Page View
+- Group by: UTM Source, UTM Medium, UTM Campaign
+- 어느 채널에서 가장 많이 유입되었는지 확인 가능
+
+---
+
+## 앞으로 할 일
+
+### 1. Open Graph 메타 태그 추가
+
+**목적:**
+- SNS(카톡, 인스타, 페북)에 링크 공유 시 미리보기 이미지/텍스트 표시
+- 클릭률 향상
+
+**구현 위치:**
+- `index.html`의 `<head>` 태그 안
+
+**필요한 태그:**
+```html
+<meta property="og:title" content="Match And Meet - Real Dating" />
+<meta property="og:description" content="Meet one genuine person every week" />
+<meta property="og:image" content="https://matchandmeet.vercel.app/og-image.png" />
+<meta property="og:url" content="https://matchandmeet.vercel.app" />
+<meta property="og:type" content="website" />
+```
+
+### 2. Favicon 추가
+
+**목적:**
+- 브라우저 탭에 브랜드 아이콘 표시
+- 프로페셔널한 인상
+
+**구현:**
+- 16x16, 32x32 크기 아이콘 생성
+- `public/favicon.ico` 파일 추가
+- `index.html`에 링크
+
+### 3. 글로벌 대응 (언어 전환)
+
+**목적:**
+- 한국어/영어 전환 기능
+- 더 넓은 사용자층 확보
+
+**구현 방법:**
+- `react-i18next` 라이브러리 사용
+- 언어 선택 버튼 추가
+- localStorage에 선택한 언어 저장
+
+**필요한 작업:**
+- 번역 파일 생성 (ko.json, en.json)
+- 컴포넌트에 번역 적용
+- 언어 토글 버튼 UI 추가
+
+### 4. 랜딩 페이지 디자인 개선
+
+**목적:**
+- 더 매력적이고 전문적인 디자인
+- 사용자 전환율 향상
+
+**개선 항목:**
+- Hero 섹션 배경 이미지/그라디언트 추가
+- 타이포그래피 개선 (폰트 선택)
+- 색상 팔레트 통일
+- 애니메이션 효과 (fade-in, slide-in 등)
+- Footer 섹션 추가 (소셜 링크, 연락처)
+- 버튼 디자인 개선
