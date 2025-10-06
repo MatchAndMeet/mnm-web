@@ -100,6 +100,11 @@ function Home() {
                 </div>
             </div>
 
+            {/*매치앤밋 철학(미션) 섹션*/}
+            <div className="mission">
+                <h2>{t('mission')}</h2>
+            </div>
+
             {/* Problem Section */}
             <div className="problem">
                 <h2>{t('problem.title')}</h2>

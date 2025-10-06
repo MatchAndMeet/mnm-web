@@ -100,6 +100,57 @@
     background-color: #ff5252;
 }
 
+/*미션 섹션*/
+.mission {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+    background: #f9f8f6; /* 따뜻한 톤 */
+    padding: 2rem;
+}
+
+.mission h2 {
+    position: relative;
+    font-size: 1.7rem;
+    font-weight: 300;
+    line-height: 1.9;
+    text-align: center;
+    white-space: pre-line;
+    color: #2f2f2f;
+    max-width: 720px;
+    font-family: 'Playfair Display', 'Noto Serif KR', serif; /* 고급스럽고 감성적인 폰트 */
+    letter-spacing: 0.3px;
+    animation: fadeIn 1.8s ease-in-out;
+}
+
+/* 인용구 따옴표 */
+.mission h2::before,
+.mission h2::after {
+    font-size: 3.2rem;
+    color: #d8c4af;
+    font-family: Georgia, serif;
+    position: absolute;
+}
+
+.mission h2::before {
+    content: "“";
+    top: -40px;
+    left: -15px;
+}
+
+.mission h2::after {
+    content: "”";
+    bottom: -60px;
+    right: -30px;
+}
+
+/* 페이드 인 애니메이션 */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
 /* Features 섹션 */
 .features {
     padding: 80px 20px;
@@ -620,8 +671,14 @@
         max-width: 100%;
     }
 
+    .language-toggle {
+        top: 20px;
+        right: 20px;
+    }
+
     .brand-name {
         font-size: 36px;
+        margin-top: 50px;
     }
 
     .hero-headline {
@@ -635,6 +692,16 @@
     .phone-placeholder {
         width: 250px;
         height: 500px;
+    }
+
+    .mission h2 {
+        font-size: 1.2rem;   /* 글자 크기 축소 */
+        line-height: 1.7;    /* 행간도 살짝 줄이기 */
+        max-width: 90%;      /* 화면에 꽉 차지 않게 */
+    }
+
+    .features-grid {
+        grid-template-columns: 1fr;
     }
 
     .problem-grid {
@@ -651,7 +718,17 @@
     }
 
     .stats-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: 1fr;
+    }
+
+    .email-signup form {
+        flex-direction: column;
+    }
+
+    .email-signup input,
+    .email-signup button {
+        width: 100%;  /* 화면 폭 100% */
+        max-width: none;
     }
 
     .footer-content {
