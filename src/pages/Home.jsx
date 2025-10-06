@@ -94,7 +94,31 @@ function Home() {
                             src="/mockup.png"
                             alt="Match And Meet App"
                             className="phone-image"
+                            loading="lazy"
                         />
+                    </div>
+                </div>
+            </div>
+
+            {/* Problem Section */}
+            <div className="problem">
+                <h2>{t('problem.title')}</h2>
+                <div className="problem-grid">
+                    <div className="problem-card">
+                        <h3>{t('problem.swipeHell.title')}</h3>
+                        <p>{t('problem.swipeHell.description')}</p>
+                    </div>
+                    <div className="problem-card">
+                        <h3>{t('problem.ghosting.title')}</h3>
+                        <p>{t('problem.ghosting.description')}</p>
+                    </div>
+                    <div className="problem-card">
+                        <h3>{t('problem.topTen.title')}</h3>
+                        <p>{t('problem.topTen.description')}</p>
+                    </div>
+                    <div className="problem-card">
+                        <h3>{t('problem.fakeProfiles.title')}</h3>
+                        <p>{t('problem.fakeProfiles.description')}</p>
                     </div>
                 </div>
             </div>
@@ -105,18 +129,76 @@ function Home() {
 
                 <div className="features-grid">
                     <div className="feature-card">
-                        <h3>{t('features.realConnections.title')}</h3>
-                        <p>{t('features.realConnections.description')}</p>
+                        <h3>{t('features.noFlaking.title')}</h3>
+                        <p>{t('features.noFlaking.description')}</p>
                     </div>
 
                     <div className="feature-card">
-                        <h3>{t('features.weeklyCurated.title')}</h3>
-                        <p>{t('features.weeklyCurated.description')}</p>
+                        <h3>{t('features.timeSaving.title')}</h3>
+                        <p>{t('features.timeSaving.description')}</p>
                     </div>
 
                     <div className="feature-card">
                         <h3>{t('features.realisticMatching.title')}</h3>
                         <p>{t('features.realisticMatching.description')}</p>
+                    </div>
+
+                    <div className="feature-card">
+                        <h3>{t('features.personalGrowth.title')}</h3>
+                        <p>{t('features.personalGrowth.description')}</p>
+                    </div>
+
+                    <div className="feature-card">
+                        <h3>{t('features.safeDating.title')}</h3>
+                        <p>{t('features.safeDating.description')}</p>
+                    </div>
+                </div>
+            </div>
+
+            {/* How It Works Section */}
+            <div className="how-it-works">
+                <h2>{t('howItWorks.title')}</h2>
+                <div className="steps-container">
+                    <div className="step-card">
+                        <h3>{t('howItWorks.step1.title')}</h3>
+                        <p>{t('howItWorks.step1.description')}</p>
+                    </div>
+                    <div className="step-arrow">→</div>
+                    <div className="step-card">
+                        <h3>{t('howItWorks.step2.title')}</h3>
+                        <p>{t('howItWorks.step2.description')}</p>
+                    </div>
+                    <div className="step-arrow">→</div>
+                    <div className="step-card">
+                        <h3>{t('howItWorks.step3.title')}</h3>
+                        <p>{t('howItWorks.step3.description')}</p>
+                    </div>
+                </div>
+            </div>
+
+            {/* Social Proof Section */}
+            <div className="social-proof">
+                <h2>{t('socialProof.title')}</h2>
+                <div className="stats-grid">
+                    <div className="stat-card">
+                        <div className="stat-icon">👥</div>
+                        <div className="stat-number">{t('socialProof.stat1.number')}</div>
+                        <div className="stat-label">{t('socialProof.stat1.label')}</div>
+                    </div>
+                    <div className="stat-card">
+                        <div className="stat-icon">💑</div>
+                        <div className="stat-number">{t('socialProof.stat2.number')}</div>
+                        <div className="stat-label">{t('socialProof.stat2.label')}</div>
+                    </div>
+                    <div className="stat-card">
+                        <div className="stat-icon">⭐</div>
+                        <div className="stat-number">{t('socialProof.stat3.number')}</div>
+                        <div className="stat-label">{t('socialProof.stat3.label')}</div>
+                    </div>
+                    <div className="stat-card">
+                        <div className="stat-icon">📊</div>
+                        <div className="stat-number">{t('socialProof.stat4.number')}</div>
+                        <div className="stat-label">{t('socialProof.stat4.label')}</div>
                     </div>
                 </div>
             </div>
@@ -124,7 +206,16 @@ function Home() {
             {/*이메일 제출 섹션*/}
             <div className="email-signup" ref={emailSectionRef}>
                 <h2>{t('emailSignup.title')}</h2>
-                <p>{t('emailSignup.subtitle')}</p>
+                <p className="email-subtitle">{t('emailSignup.subtitle')}</p>
+
+                <div className="benefits-box">
+                    <p className="benefits-title">{t('emailSignup.benefitsTitle')}</p>
+                    <div className="benefits-list">
+                        <p>{t('emailSignup.benefit1')}</p>
+                        <p>{t('emailSignup.benefit2')} <span className="benefit-sub">{t('emailSignup.benefit2Sub')}</span></p>
+                        <p>{t('emailSignup.benefit3')}</p>
+                    </div>
+                </div>
 
                 {submitted ? (
                     <p className="success-message">{t('emailSignup.successMessage')}</p>
@@ -143,6 +234,31 @@ function Home() {
 
                 {error && <p className="error-message">{t('emailSignup.errorMessage')}</p>}
             </div>
+
+            {/* Footer */}
+            <footer className="footer">
+                <div className="footer-content">
+                    <div className="footer-left">
+                        <h3>Match And Meet</h3>
+                        <p>{t('footer.tagline')}</p>
+                    </div>
+                    <div className="footer-center">
+                        <a href="#">{t('footer.about')}</a>
+                        <a href="#">{t('footer.privacy')}</a>
+                        <a href="#">{t('footer.terms')}</a>
+                    </div>
+                    <div className="footer-right">
+                        <p>{t('footer.contact')}: hello@matchandmeet.com</p>
+                        <div className="social-links">
+                            <a href="#" aria-label="Instagram">📷</a>
+                            <a href="#" aria-label="Twitter">🐦</a>
+                        </div>
+                    </div>
+                </div>
+                <div className="footer-bottom">
+                    <p>{t('footer.copyright')}</p>
+                </div>
+            </footer>
         </>
     )
 }
