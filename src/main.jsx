@@ -3,6 +3,11 @@ import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import './index.css'
 import App from './App.jsx'
+import { initAmplitude } from './amplitudeClient'
+import './i18n'
+
+// Amplitude 초기화
+initAmplitude()
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

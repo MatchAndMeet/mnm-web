@@ -1,0 +1,104 @@
+{
+  "hero": {
+    "headline": "Stop Swiping.\nStart Dating.",
+    "subtitle": "One real date every week. No endless swiping, no ghosting, just genuine connections.",
+    "cta": "Get Started"
+  },
+  "problem": {
+    "title": "Why Other Dating Apps Fail",
+    "swipeHell": {
+      "title": "🔄 Endless Swipe Hell",
+      "description": "Hundreds of swipes daily, but zero real dates. Just wasting time and getting exhausted."
+    },
+    "ghosting": {
+      "title": "👻 Ghosting Culture",
+      "description": "Lots of chats but no actual meetups. Even when plans are made, people flake constantly."
+    },
+    "topTen": {
+      "title": "💸 Top 10% Monopoly",
+      "description": "A few attractive profiles get all the matches. Regular people don't stand a chance."
+    },
+    "fakeProfiles": {
+      "title": "🤖 Fake Profile Flood",
+      "description": "Photo scams, fake accounts, and bots everywhere. Finding real people is nearly impossible."
+    }
+  },
+  "features": {
+    "title": "Why Choose Match And Meet?",
+    "noFlaking": {
+      "title": "📅 Real Dates Only.",
+      "description": "3 matches weekly → Choose 1 → Meet for real. Flake? Next week's matches paused. Only committed people remain."
+    },
+    "timeSaving": {
+      "title": "⏰ Just 5 Minutes a Day",
+      "description": "No endless swiping. Check once a week. Choose → Meet → Done."
+    },
+    "realisticMatching": {
+      "title": "🎯 Real People At Your Level",
+      "description": "No model-level profiles. No top 10% monopoly. Match with similar people. Realistic connections that actually work."
+    },
+    "personalGrowth": {
+      "title": "📈 Grow With Every Date",
+      "description": "Meet someone new every week. Improve your dating skills. Better understanding of what you want. Become a better dater."
+    },
+    "safeDating": {
+      "title": "✅ Safe & Verified",
+      "description": "Real name verification. Profile screening. Report system. Fake accounts instantly banned."
+    }
+  },
+  "howItWorks": {
+    "title": "3 Simple Steps to Real Dates",
+    "step1": {
+      "title": "1️⃣ Every Monday at 9 AM",
+      "description": "Receive 3 curated matches"
+    },
+    "step2": {
+      "title": "2️⃣ By Tuesday Midnight",
+      "description": "Choose 1 person + Confirm date"
+    },
+    "step3": {
+      "title": "3️⃣ By Weekend",
+      "description": "Meet up (cafe, dinner, etc.)"
+    }
+  },
+  "socialProof": {
+    "title": "Proven by Numbers",
+    "stat1": {
+      "number": "1,200+",
+      "label": "Active Users"
+    },
+    "stat2": {
+      "number": "340",
+      "label": "Successful First Dates"
+    },
+    "stat3": {
+      "number": "87%",
+      "label": "Meeting Success Rate"
+    },
+    "stat4": {
+      "number": "3%",
+      "label": "Flake Rate (vs 40% avg)"
+    }
+  },
+  "emailSignup": {
+    "title": "🔥 Currently Improving Algorithm",
+    "subtitle": "New signups temporarily paused.",
+    "benefitsTitle": "Priority Access Benefits:",
+    "benefit1": "✅ Immediate access when ready",
+    "benefit2": "✅ 3 Super Match credits",
+    "benefit2Sub": "(2 matches per week)",
+    "benefit3": "✅ Pay after your first free match.",
+    "placeholder": "Enter your email",
+    "button": "Request Priority Access",
+    "successMessage": "✅ Thank you! We'll notify you immediately when ready.",
+    "errorMessage": "Already registered or invalid email"
+  },
+  "footer": {
+    "tagline": "Stop Swiping. Start Dating.",
+    "about": "About",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "contact": "Contact",
+    "copyright": "© 2025 Match And Meet. All rights reserved."
+  }
+}

@@ -1,7 +1,11 @@
 import {useState, useRef} from 'react';
 import { supabase } from '../supabaseClient'
+import { trackEvent } from '../amplitudeClient'
+import { useTranslation } from 'react-i18next'
 
 function Home() {
+    const { t, i18n } = useTranslation()
+
     // 상태 변수 선언
     const [email, setEmail] = useState('');
     const [submitted, setSubmitted] = useState(false);
@@ -36,81 +40,225 @@ function Home() {
             if (error) {
                 console.error('Error:', error)
                 setError('Already registered or invalid email')
+                trackEvent('Email Signup Failed', { error: error.message })
             } else {
                 console.log('Success:', data)
                 setSubmitted(true)
                 setEmail('')
+                trackEvent('Email Signup Success')  // 🎯 성공 이벤트 추적
             }
         }
+    }
+
+    // 언어 전환 함수
+    const changeLanguage = (lang) => {
+        i18n.changeLanguage(lang)  // 언어 변경
+        localStorage.setItem('language', lang)  // localStorage에 저장
     }
 
     return (
         <>
             {/*히어로 섹션*/}
             <div className="hero">
-                <h1>Match And Meet</h1>
-                <p>“We’re currently improving our matching algorithm to accommodate a sudden spike in users.”</p>
-                <button onClick={scrollToEmailSection}>Sign up for the waitlist</button>
+                {/* 언어 전환 버튼 */}
+                <div className="language-toggle">
+                    <button
+                        onClick={() => changeLanguage('en')}
+                        className={i18n.language === 'en' ? 'active' : ''}
+                    >
+                        EN
+                    </button>
+                    <span>|</span>
+                    <button
+                        onClick={() => changeLanguage('ko')}
+                        className={i18n.language === 'ko' ? 'active' : ''}
+                    >
+                        한국어
+                    </button>
+                </div>
+
+                {/* 왼쪽: 텍스트 콘텐츠 */}
+                <div className="hero-content">
+                    <h1 className="brand-name">Match And Meet</h1>
+                    <h2 className="hero-headline">{t('hero.headline')}</h2>
+                    <p className="hero-subtitle">{t('hero.subtitle')}</p>
+                    <button className="cta-button" onClick={scrollToEmailSection}>
+                        {t('hero.cta')}
+                    </button>
+                </div>
+
+                {/* 오른쪽: 앱 목업 */}
+                <div className="hero-mockup">
+                    <div className="phone-container">
+                        <img
+                            src="/mockup.png"
+                            alt="Match And Meet App"
+                            className="phone-image"
+                            loading="lazy"
+                        />
+                    </div>
+                </div>
+            </div>
+
+            {/* Problem Section */}
+            <div className="problem">
+                <h2>{t('problem.title')}</h2>
+                <div className="problem-grid">
+                    <div className="problem-card">
+                        <h3>{t('problem.swipeHell.title')}</h3>
+                        <p>{t('problem.swipeHell.description')}</p>
+                    </div>
+                    <div className="problem-card">
+                        <h3>{t('problem.ghosting.title')}</h3>
+                        <p>{t('problem.ghosting.description')}</p>
+                    </div>
+                    <div className="problem-card">
+                        <h3>{t('problem.topTen.title')}</h3>
+                        <p>{t('problem.topTen.description')}</p>
+                    </div>
+                    <div className="problem-card">
+                        <h3>{t('problem.fakeProfiles.title')}</h3>
+                        <p>{t('problem.fakeProfiles.description')}</p>
+                    </div>
+                </div>
             </div>
 
             {/*피처 섹션*/}
             <div className="features">
-                <h2>Why Choose Match And Meet?</h2>
+                <h2>{t('features.title')}</h2>
 
                 <div className="features-grid">
                     <div className="feature-card">
-                        <h3>💝 Real Connections, Not Swipes</h3>
-                        <p>Modern dating has become too superficial with endless swiping and ghosting. The more meaningful dates you have, the better you become at understanding what you truly want. Meet one genuine person every week and find your real
-                            match.</p>
+                        <h3>{t('features.noFlaking.title')}</h3>
+                        <p>{t('features.noFlaking.description')}</p>
                     </div>
 
                     <div className="feature-card">
-                        <h3>📅 Weekly Curated Matches</h3>
-                        <p>Receive three carefully selected matches every week. Choose one and commit to meeting them - no flaking allowed. If you don't follow through, you won't receive next week's matches. We're serious about real dates.</p>
+                        <h3>{t('features.timeSaving.title')}</h3>
+                        <p>{t('features.timeSaving.description')}</p>
                     </div>
 
                     <div className="feature-card">
-                        <h3>🎯 Realistic Matching Algorithm</h3>
-                        <p>Unlike other apps dominated by top 10% profiles and fake accounts, we match you with real people at your level. Get genuine, compatible matches that actually lead to meaningful relationships.</p>
-                    </div>
-
-                    {/*<div className="feature-card">
-                        <h3>🤖 만남이 부족한 사회 문제</h3>
-                        <p>점점 인스턴트 만남이 만아지고 만남 자체도 줄어들었습니다. 많이 만날수록 더 이성을 보는 눈도 좋아지고 자신의 이성에 대한 매너도 좋아집니다. 매주 한 명의 이성을 만나면서 진짜 인연을 찾길 바랍니다.</p>
+                        <h3>{t('features.realisticMatching.title')}</h3>
+                        <p>{t('features.realisticMatching.description')}</p>
                     </div>
 
                     <div className="feature-card">
-                        <h3>🔒 매주 매칭 상대 선정</h3>
-                        <p>매주 세 명의 매칭 상대를 선정해드립니다. 여기서 한 명을 선택하게 되면 해당 주에 무조건 만남을 가져야합니다. 만남이 성사되지 않을 경우에 다음 매칭이 제공되지 않습니다.</p>
+                        <h3>{t('features.personalGrowth.title')}</h3>
+                        <p>{t('features.personalGrowth.description')}</p>
                     </div>
 
                     <div className="feature-card">
-                        <h3>⚡ 현실적인 매칭 상대 선정</h3>
-                        <p>상위 10%로 남성, 여성 알바가 독식하는 다른 데이팅 앱과는 다릅니다. 현실적인 상대를 추천해드립니다.</p>
-                    </div>*/}
+                        <h3>{t('features.safeDating.title')}</h3>
+                        <p>{t('features.safeDating.description')}</p>
+                    </div>
+                </div>
+            </div>
+
+            {/* How It Works Section */}
+            <div className="how-it-works">
+                <h2>{t('howItWorks.title')}</h2>
+                <div className="steps-container">
+                    <div className="step-card">
+                        <h3>{t('howItWorks.step1.title')}</h3>
+                        <p>{t('howItWorks.step1.description')}</p>
+                    </div>
+                    <div className="step-arrow">→</div>
+                    <div className="step-card">
+                        <h3>{t('howItWorks.step2.title')}</h3>
+                        <p>{t('howItWorks.step2.description')}</p>
+                    </div>
+                    <div className="step-arrow">→</div>
+                    <div className="step-card">
+                        <h3>{t('howItWorks.step3.title')}</h3>
+                        <p>{t('howItWorks.step3.description')}</p>
+                    </div>
+                </div>
+            </div>
+
+            {/* Social Proof Section */}
+            <div className="social-proof">
+                <h2>{t('socialProof.title')}</h2>
+                <div className="stats-grid">
+                    <div className="stat-card">
+                        <div className="stat-icon">👥</div>
+                        <div className="stat-number">{t('socialProof.stat1.number')}</div>
+                        <div className="stat-label">{t('socialProof.stat1.label')}</div>
+                    </div>
+                    <div className="stat-card">
+                        <div className="stat-icon">💑</div>
+                        <div className="stat-number">{t('socialProof.stat2.number')}</div>
+                        <div className="stat-label">{t('socialProof.stat2.label')}</div>
+                    </div>
+                    <div className="stat-card">
+                        <div className="stat-icon">⭐</div>
+                        <div className="stat-number">{t('socialProof.stat3.number')}</div>
+                        <div className="stat-label">{t('socialProof.stat3.label')}</div>
+                    </div>
+                    <div className="stat-card">
+                        <div className="stat-icon">📊</div>
+                        <div className="stat-number">{t('socialProof.stat4.number')}</div>
+                        <div className="stat-label">{t('socialProof.stat4.label')}</div>
+                    </div>
                 </div>
             </div>
 
             {/*이메일 제출 섹션*/}
             <div className="email-signup" ref={emailSectionRef}>
-                <h2>Join the Waitlist</h2>
-                <p>Be the first to know when we launch</p>
+                <h2>{t('emailSignup.title')}</h2>
+                <p className="email-subtitle">{t('emailSignup.subtitle')}</p>
+
+                <div className="benefits-box">
+                    <p className="benefits-title">{t('emailSignup.benefitsTitle')}</p>
+                    <div className="benefits-list">
+                        <p>{t('emailSignup.benefit1')}</p>
+                        <p>{t('emailSignup.benefit2')} <span className="benefit-sub">{t('emailSignup.benefit2Sub')}</span></p>
+                        <p>{t('emailSignup.benefit3')}</p>
+                    </div>
+                </div>
 
                 {submitted ? (
-                    <p className="success-message">✅ Thank you! We'll notify you soon.</p>
+                    <p className="success-message">{t('emailSignup.successMessage')}</p>
                 ) : (
                     <form onSubmit={handleSubmit}>
                         <input
                             type="email"
-                            placeholder="Enter your email"
+                            placeholder={t('emailSignup.placeholder')}
                             value={email}
                             onChange={handleEmailChange}
                             required
                         />
-                        <button type="submit">Notify Me</button>
+                        <button type="submit">{t('emailSignup.button')}</button>
                     </form>
                 )}
+
+                {error && <p className="error-message">{t('emailSignup.errorMessage')}</p>}
             </div>
+
+            {/* Footer */}
+            <footer className="footer">
+                <div className="footer-content">
+                    <div className="footer-left">
+                        <h3>Match And Meet</h3>
+                        <p>{t('footer.tagline')}</p>
+                    </div>
+                    <div className="footer-center">
+                        <a href="#">{t('footer.about')}</a>
+                        <a href="#">{t('footer.privacy')}</a>
+                        <a href="#">{t('footer.terms')}</a>
+                    </div>
+                    <div className="footer-right">
+                        <p>{t('footer.contact')}: hello@matchandmeet.com</p>
+                        <div className="social-links">
+                            <a href="#" aria-label="Instagram">📷</a>
+                            <a href="#" aria-label="Twitter">🐦</a>
+                        </div>
+                    </div>
+                </div>
+                <div className="footer-bottom">
+                    <p>{t('footer.copyright')}</p>
+                </div>
+            </footer>
         </>
     )
 }

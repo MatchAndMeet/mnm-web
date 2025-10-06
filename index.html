@@ -1,13 +1,61 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>mnm-web</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<head>
+    <meta charset="UTF-8"/>
+    <link rel="icon" type="image/svg+xml" href="/vite.svg"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <!-- 기본 Meta 태그 -->
+    <title>Match And Meet - Stop Swiping, Start Dating</title>
+    <meta name="description" content="진짜 만남을 위한 데이팅 앱. 매주 3명 매칭, 바람맞히기 금지. 현실적인 매칭 알고리즘으로 진정한 인연을 찾으세요.">
+    <meta name="keywords" content="데이팅앱, 소개팅, 매칭, 진짜만남, 바람맞히기금지">
+    <meta name="author" content="Match And Meet">
+
+    <!-- 언어 설정 -->
+    <meta name="language" content="Korean">
+    <link rel="alternate" hreflang="ko" href="https://matchandmeet.com/ko" />
+    <link rel="alternate" hreflang="en" href="https://matchandmeet.com/en" />
+
+    <!-- Open Graph (카카오톡, 페이스북 공유 시) -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Match And Meet - 진짜 만남을 위한 데이팅">
+    <meta property="og:description" content="매주 한 번, 진짜 만남. 끝없는 스와이프도, 잠수도 없는 진정한 인연만.">
+    <meta property="og:image" content="https://matchandmeet.com/og-image.png">
+    <meta property="og:url" content="https://matchandmeet.com">
+    <meta property="og:site_name" content="Match And Meet">
+
+    <!-- Twitter 카드 -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Match And Meet - 진짜 만남을 위한 데이팅">
+    <meta name="twitter:description" content="매주 한 번, 진짜 만남. 끝없는 스와이프도, 잠수도 없는 진정한 인연만.">
+    <meta name="twitter:image" content="https://matchandmeet.com/og-image.png">
+
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "WebApplication",
+            "name": "Match And Meet",
+            "description": "진짜 만남을 위한 데이팅 앱",
+            "url": "https://matchandmeet.com",
+            "applicationCategory": "LifestyleApplication",
+            "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "KRW"
+            }
+        }
+    </script>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/android-chrome-512x512.png">
+</head>
+<body>
+<div id="root"></div>
+<script type="module" src="/src/main.jsx"></script>
+</body>
 </html>
