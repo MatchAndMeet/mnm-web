@@ -77,9 +77,26 @@ function Home() {
                     </button>
                 </div>
 
-                <h1>{t('hero.title')}</h1>
-                <p>{t('hero.subtitle')}</p>
-                <button onClick={scrollToEmailSection}>{t('hero.cta')}</button>
+                {/* 왼쪽: 텍스트 콘텐츠 */}
+                <div className="hero-content">
+                    <h1 className="brand-name">Match And Meet</h1>
+                    <h2 className="hero-headline">{t('hero.headline')}</h2>
+                    <p className="hero-subtitle">{t('hero.subtitle')}</p>
+                    <button className="cta-button" onClick={scrollToEmailSection}>
+                        {t('hero.cta')}
+                    </button>
+                </div>
+
+                {/* 오른쪽: 앱 목업 */}
+                <div className="hero-mockup">
+                    <div className="phone-container">
+                        <img
+                            src="/mockup.png"
+                            alt="Match And Meet App"
+                            className="phone-image"
+                        />
+                    </div>
+                </div>
             </div>
 
             {/*피처 섹션*/}

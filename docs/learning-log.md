@@ -1380,10 +1380,146 @@ function Home() {
 ```
 
 **앱 목업 구성:**
-- 화면 1: 프로필 카드 (Tinder 스타일)
-- 화면 2: 매칭 알림 "이번 주 3명 도착!"
-- 화면 3: 만남 확정 화면
+가로로 3개 이미지 배치:
+- **이미지 1 (왼쪽)**: 앱에서 3명의 이성이 추천되는 화면
+  - 프로필 카드 3개 표시
+  - "이번 주 매칭 3명" 헤더
+- **이미지 2 (중앙)**: 매칭 확정 화면
+  - 선택한 사람과 매칭 성공
+  - "매칭 완료! 만남 날짜를 정하세요"
+- **이미지 3 (오른쪽)**: 실제 만남 이미지
+  - 카페에서 만나는 장면 일러스트
+  - 또는 만남 후기 화면
+
+**구현 방식:**
 - CSS로 iPhone 프레임 + 샘플 UI 구현
+- 또는 실제 디자인 목업 이미지 삽입
+- 약간 겹치게 배치하여 입체감
+
+**현재 구현:**
+- 임시 mockup.png 사용
+- Figma로 실제 디자인 제작 예정
+
+**디자인 요구사항 (Figma 작업):**
+
+**화면 구성:**
+- "이번주 당신의 데이팅 파트너" 헤더 문구
+- 1~3명의 이성 추천 화면
+
+**이미지:**
+- 매력적인 여성 또는 남성
+- 현실감 있는 실제 사진 느낌 (모델급 아님)
+- 사진이 크게 배치
+
+**화면 개수 고민:**
+- **옵션 1**: 2개 화면 (남성용/여성용 각각)
+  - 남성 사용자 → 여성 프로필 화면
+  - 여성 사용자 → 남성 프로필 화면
+- **옵션 2**: 1개 화면에 3명 선택
+  - 여러 명 중 한 명 선택하는 느낌
+  - 카드 스택 또는 리스트
+
+**Figma 작업 순서:**
+1. iPhone 14 Pro 프레임 (375x812px)
+2. 상단: 헤더 + "이번주 당신의 데이팅 파트너"
+3. 프로필 카드 디자인
+4. 실제 느낌 프로필 사진 (Unsplash 인물 사진)
+5. Export → PNG (2x 또는 3x)
+
+**상세 가이드:**
+- `docs/figma-mockup-guide.md` 참고
+
+**언어별 스크린샷 대응:**
+- 한국어 사용자 → `mockup-ko.png` 표시
+- 영어 사용자 → `mockup-en.png` 표시
+
+**구현 방법:**
+```jsx
+// Home.jsx
+const mockupImage = i18n.language === 'ko' ? '/mockup-ko.png' : '/mockup-en.png'
+
+<img src={mockupImage} alt="Match And Meet App" />
+```
+
+**필요한 이미지:**
+- `public/mockup-ko.png` (한국어 버전)
+- `public/mockup-en.png` (영어 버전)
+
+**텍스트 내용:**
+- **한국어**: "이번주 당신의 데이팅 파트너"
+- **영어**: "Your Dating Partners This Week"
+
+---
+
+**향후 개선: 3개 iPhone 겹치기 레이아웃**
+
+**HTML 구조:**
+```jsx
+<div className="hero-mockup">
+    <div className="phone-stack">
+        <div className="phone phone-1">
+            <img src="/mockup-1.png" alt="매칭 추천" />
+        </div>
+        <div className="phone phone-2">
+            <img src="/mockup-2.png" alt="매칭 확정" />
+        </div>
+        <div className="phone phone-3">
+            <img src="/mockup-3.png" alt="만남 성사" />
+        </div>
+    </div>
+</div>
+```
+
+**CSS 스타일:**
+```css
+.phone-stack {
+    position: relative;
+    width: 400px;
+    height: 600px;
+}
+
+.phone {
+    position: absolute;
+    width: 280px;
+    height: 580px;
+    border-radius: 30px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    transition: transform 0.3s;
+}
+
+.phone-1 {
+    left: 0;
+    top: 20px;
+    z-index: 1;
+    transform: rotate(-8deg);
+}
+
+.phone-2 {
+    left: 60px;
+    top: 0;
+    z-index: 2;
+}
+
+.phone-3 {
+    left: 120px;
+    top: 20px;
+    z-index: 1;
+    transform: rotate(8deg);
+}
+
+/* 호버 효과 */
+.phone:hover {
+    transform: scale(1.05) translateY(-10px);
+    z-index: 3;
+}
+```
+
+**효과:**
+- 3개 iPhone이 카드처럼 펼쳐진 모양
+- 가운데가 가장 앞에 (z-index: 2)
+- 양옆이 살짝 회전 (rotate ±8deg)
+- 호버 시 확대 + 앞으로 이동
 
 ---
 
@@ -1486,10 +1622,16 @@ function Home() {
 **"숫자로 증명하는 성공"**
 
 통계 4개:
-- 🔥 대기자 1,200명
+- 👥 활성 사용자 1,200명
 - 💑 성사된 첫 데이트 340건
 - ⭐ 만남 성공률 87%
-- 📊 평균 바람맞히기율 3% (일반 앱 40%)
+- 📊 바람맞히기율 3% (일반 앱 40%)
+
+**영어 버전:**
+- 👥 1,200+ Active Users
+- 💑 340 Successful First Dates
+- ⭐ 87% Meeting Success Rate
+- 📊 3% Flake Rate (vs 40% avg)
 
 **디자인:**
 - 1열로 큰 숫자 표시
@@ -1500,19 +1642,39 @@ function Home() {
 
 **6. Email Signup 섹션 (개선)**
 
+**전략:**
+- 서비스가 이미 운영 중인 것처럼 표현
+- 현재 사용자 폭주로 신규 가입 제한 중
+- 우선 가입 혜택 제공
+
 **메시지:**
 ```
-현재 사용자가 몰려 알고리즘 개선 중입니다.
-대기명단에 이메일을 입력해주시면:
-✅ 우선 가입자로 등록
-✅ 출시 알림 발송
+🔥 현재 사용자 폭주로 알고리즘 개선 중
+신규 가입이 일시 제한되었습니다.
+
+우선 가입 신청하시면:
+✅ 개선 완료 시 즉시 가입 가능
 ✅ 슈퍼매칭 이용권 3장 제공
    (일주일에 2번 매칭 선택 가능)
+✅ 첫 매칭 무료
+```
+
+**영어 버전:**
+```
+🔥 Currently Improving Algorithm
+New signups temporarily paused.
+
+Priority Access Benefits:
+✅ Immediate access when ready
+✅ 3 Super Match credits
+   (2 matches per week)
+✅ First match free
 ```
 
 **디자인:**
 - 현재 디자인 기본 유지
 - 혜택 내용 강조 (체크마크 + 박스)
+- "🔥" 아이콘으로 긴급성 표현
 - "슈퍼매칭 이용권" 강조 배지
 - 위치: 페이지 최하단 (Footer 바로 위)
 
