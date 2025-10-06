@@ -37,6 +37,7 @@
     line-height: 1.6;
     margin-bottom: 40px;
     color: lightgray;
+    white-space: pre-line;
 }
 
 .cta-button {
