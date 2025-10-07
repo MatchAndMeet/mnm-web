@@ -91,9 +91,9 @@ function Home() {
                 <div className="hero-mockup">
                     <div className="phone-container">
                         <img
+                            className="phone-image"
                             src="/mockup.png"
                             alt="Match And Meet App"
-                            className="phone-image"
                             loading="lazy"
                         />
                     </div>
