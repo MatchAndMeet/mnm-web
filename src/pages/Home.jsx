@@ -91,13 +91,18 @@ function Home() {
                 <div className="hero-mockup">
                     <div className="phone-container">
                         <img
+                            className="phone-image"
                             src="/mockup.png"
                             alt="Match And Meet App"
-                            className="phone-image"
                             loading="lazy"
                         />
                     </div>
                 </div>
+            </div>
+
+            {/*매치앤밋 철학(미션) 섹션*/}
+            <div className="mission">
+                <h2>{t('mission')}</h2>
             </div>
 
             {/* Problem Section */}
